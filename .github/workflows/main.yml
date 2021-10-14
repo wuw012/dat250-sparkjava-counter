@@ -13,8 +13,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          
-      - name: Go to todos dir
-        run: cd todos
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots verify
+        working-directory: todos
