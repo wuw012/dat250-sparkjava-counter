@@ -1,6 +1,6 @@
 # dat250-sparkjava-counter
 
-This test suite should run after your implementation:
+This test suite (**TodoAPITest**) should run after your implementation. You are not allowed to change the test class!
 
 [![Todos API test suite](https://github.com/selabhvl/dat250-sparkjava-counter/actions/workflows/main.yml/badge.svg)](https://github.com/selabhvl/dat250-sparkjava-counter/actions/workflows/main.yml)
 
