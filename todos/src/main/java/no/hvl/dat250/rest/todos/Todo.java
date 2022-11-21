@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Todo {
-    private static final AtomicLong count = new AtomicLong(0);
     private final Long id;
     private String summary;
     private String description;
@@ -15,11 +14,6 @@ public class Todo {
         this.id = id;
         this.summary = summary;
         this.description = description;
-    }
-
-    public Todo(String summary, String description) {
-
-        this(count.incrementAndGet(), summary, description);
     }
 
 

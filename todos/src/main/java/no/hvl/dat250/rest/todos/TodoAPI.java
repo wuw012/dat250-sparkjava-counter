@@ -14,6 +14,7 @@ import static spark.Spark.*;
 public class TodoAPI {
 
     static Todo todo = null;
+    static int idCounter;
 
     public static boolean isNumeric(String strNum) {
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
@@ -30,9 +31,37 @@ public class TodoAPI {
             port(8000);
         }
 
-        after((req, res) -> res.type("application/json"));
+        options("/*",
+                (request, response) -> {
+
+                    String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers",
+                                accessControlRequestHeaders);
+                    }
+
+                    String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods",
+                                accessControlRequestMethod);
+                    }
+
+                    return "OK";
+                });
+
+        after((req, res) -> {
+            res.type("application/json");
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+            //res.header("Access-Control-Allow-Methods", "POST");
+            //res.header("Access-Control-Allow-Methods", "PUT");
+            //res.header("Access-Control-Allow-Methods", "DELETE");
+        });
 
         Set<Todo> todos = new HashSet<>();
+        idCounter = 1;
 
         // Read (GET) TODO-items
         get("/todos", (request, response) -> {
@@ -44,7 +73,9 @@ public class TodoAPI {
         post("/todos", (request, response) -> {
             Todo todo;
             Gson gson = new Gson();
-            todo = gson.fromJson(request.body(), Todo.class);
+            idCounter+=1;
+            String jsonWithID = "{\r\n    id: "+idCounter+",\r"+request.body().substring(1);
+            todo = gson.fromJson(jsonWithID, Todo.class);
 
             todos.add(todo);
             return gson.toJson(todo);
